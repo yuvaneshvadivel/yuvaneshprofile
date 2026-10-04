@@ -113,10 +113,8 @@
   .hero{position:relative; min-height:100vh; min-height:100svh; display:flex; flex-direction:column; justify-content:flex-end; padding:7rem 0 clamp(1.5rem,3vw,2.5rem); overflow:hidden; border-top:0;
     background:radial-gradient(52vmax 42vmax at 72% 36%, rgba(244,241,234,.06), transparent 70%), var(--bg)}
   #heroCanvas{position:absolute; inset:0; width:100%; height:100%; z-index:0; pointer-events:none; display:none}
-  #heroVideo{position:absolute; z-index:0; pointer-events:none; right:clamp(1rem,6vw,6rem); top:50%; width:min(30vw,420px); height:min(76vh,680px); transform:translateY(-50%); object-fit:cover; object-position:center; opacity:.78; border-radius:28px; -webkit-mask-image:radial-gradient(ellipse 72% 78% at 50% 50%, #000 48%, rgba(0,0,0,.88) 63%, transparent 100%); mask-image:radial-gradient(ellipse 72% 78% at 50% 50%, #000 48%, rgba(0,0,0,.88) 63%, transparent 100%); filter:saturate(.82) contrast(.94) brightness(.86)}
-  .hero-inner{position:relative; z-index:1}
-  @media (max-width:900px){#heroVideo{right:-1rem; width:min(42vw,300px); height:64vh; opacity:.42}}
-  @media (max-width:760px){#heroVideo{right:-3rem; width:52vw; height:58vh; opacity:.24; top:38%; -webkit-mask-image:radial-gradient(ellipse 70% 72% at 50% 50%, #000 35%, rgba(0,0,0,.65) 60%, transparent 100%); mask-image:radial-gradient(ellipse 70% 72% at 50% 50%, #000 35%, rgba(0,0,0,.65) 60%, transparent 100%)}}
+  #heroVideo{position:absolute; inset:0; z-index:0; width:100%; height:100%; pointer-events:auto; cursor:pointer; object-fit:cover; object-position:center; opacity:.32; border:0; border-radius:0; filter:saturate(.8) contrast(.94) brightness(.72); -webkit-mask-image:radial-gradient(ellipse 82% 88% at 50% 50%, #000 35%, rgba(0,0,0,.94) 62%, transparent 100%); mask-image:radial-gradient(ellipse 82% 88% at 50% 50%, #000 35%, rgba(0,0,0,.94) 62%, transparent 100%)}
+  .hero-inner{position:relative; z-index:1} @media (max-width:760px){#heroVideo{opacity:.24; object-position:center}}
   .status{display:inline-flex; align-items:center; gap:.6rem; margin-bottom:clamp(1rem,2vw,1.6rem); padding:.35rem .9rem; border:1px solid var(--line); border-radius:999px; background:rgba(244,241,234,.03); color:var(--mut)}
   .status i{width:6px; height:6px; border-radius:50%; background:var(--acc); display:block}
   .hero-name{font-family:var(--display); font-weight:800; font-size:clamp(3.2rem, 13.6vw, 12.6rem); line-height:.9; letter-spacing:-.06em; white-space:nowrap}
@@ -1169,6 +1167,13 @@ var ASSET = {0:{src:"project-images/sprite-drink-poster.jpg",w:1080,h:1080},1:{s
   }
   // Hero 3D visual replaced by the self-introduction video.
   three = null;
+
+  var heroVideo = document.getElementById('heroVideo');
+  if (heroVideo) {
+    heroVideo.addEventListener('click', function(){
+      if (heroVideo.paused) heroVideo.play(); else heroVideo.pause();
+    });
+  }
 
   /* ---------- Scroll-linked updates ---------- */
   var zz = document.getElementById('zz'), zzItems = [].slice.call(zz.children);
