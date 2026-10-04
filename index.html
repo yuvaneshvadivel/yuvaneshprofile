@@ -118,7 +118,7 @@
   
   .status{display:inline-flex; align-items:center; gap:.6rem; margin-bottom:clamp(1rem,2vw,1.6rem); padding:.35rem .9rem; border:1px solid var(--line); border-radius:999px; background:rgba(244,241,234,.03); color:var(--mut)}
   .status i{width:6px; height:6px; border-radius:50%; background:var(--acc); display:block}
-  .hero-name{font-family:var(--display); font-weight:800; font-size:clamp(3.2rem, 13.6vw, 12.6rem); line-height:.9; letter-spacing:-.06em; white-space:nowrap}
+  .hero-name{font-family:var(--display); font-weight:800; font-size:clamp(3.2rem, 13.6vw, 12.6rem); line-height:.9; letter-spacing:-.06em; white-space:nowrap; color:var(--fg); text-shadow:0 0 28px rgba(244,241,234,.12)}
   .hl-wrap{display:inline-block; overflow:hidden; vertical-align:top; padding:.04em .02em .14em; margin-bottom:-.14em}
   .hl{display:inline-block}
   html.js:not(.ready) .hl{transform:translateY(112%)}
@@ -1171,17 +1171,16 @@ var ASSET = {0:{src:"project-images/sprite-drink-poster.jpg",w:1080,h:1080},1:{s
   // Use the centered self-introduction video as the Hero visual.
   three = null;
 
-  // Hero video: play once. Browsers may block autoplay with sound, so
-  // start muted when necessary and unlock the audio on the first real interaction.
+  // Hero video: wait 2.5 seconds, then play once.
   var heroVideo = document.querySelector('.hero-video');
   if (heroVideo) {
     heroVideo.loop = false;
-    heroVideo.autoplay = true;
+    heroVideo.autoplay = false;
     heroVideo.playsInline = true;
     heroVideo.volume = 1;
     heroVideo.muted = false;
 
-    function playHeroWithAudio(){
+    var heroPlayTimer = setTimeout(function(){
       if (heroVideo.ended) return;
       heroVideo.muted = false;
       heroVideo.volume = 1;
@@ -1192,18 +1191,17 @@ var ASSET = {0:{src:"project-images/sprite-drink-poster.jpg",w:1080,h:1080},1:{s
           heroVideo.play().catch(function(){});
         });
       }
-    }
+    }, 2500);
 
-    // First try to start immediately with sound.
-    playHeroWithAudio();
-
-    // If the browser blocked sound autoplay, any first click/tap/key press
-    // on the portfolio enables the audio and continues the same playback.
+    // If the browser blocks sound playback, the first interaction unlocks it.
     function unlockHeroAudio(){
-      if (!heroVideo.ended) {
+      if (!heroVideo.ended && heroVideo.paused) {
         heroVideo.muted = false;
         heroVideo.volume = 1;
-        heroVideo.play().catch(function(){});
+        heroVideo.play().catch(function(){
+          heroVideo.muted = true;
+          heroVideo.play().catch(function(){});
+        });
       }
       document.removeEventListener('pointerdown', unlockHeroAudio);
       document.removeEventListener('click', unlockHeroAudio);
@@ -1215,8 +1213,9 @@ var ASSET = {0:{src:"project-images/sprite-drink-poster.jpg",w:1080,h:1080},1:{s
     document.addEventListener('touchstart', unlockHeroAudio, { once:true, passive:true });
     document.addEventListener('keydown', unlockHeroAudio, { once:true });
 
-    // Never replay automatically. Refreshing the portfolio starts it again.
+    // Never replay automatically. Refreshing the portfolio starts the sequence again.
     heroVideo.addEventListener('ended', function(){
+      clearTimeout(heroPlayTimer);
       heroVideo.pause();
       heroVideo.currentTime = heroVideo.duration;
     });
