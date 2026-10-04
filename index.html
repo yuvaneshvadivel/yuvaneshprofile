@@ -109,55 +109,27 @@
   .tlink{display:inline-flex; align-items:center; gap:.5rem; width:fit-content; border:0; padding:0 0 .25rem; cursor:pointer; color:var(--fg); text-decoration:none; font-family:var(--font); font-weight:600; font-size:14px; background-color:transparent; background-image:linear-gradient(var(--acc),var(--acc)); background-repeat:no-repeat; background-size:0% 1px; background-position:0 100%; transition:background-size .5s var(--ease)}
   .tlink:hover{background-size:100% 1px}
 
-  /* ---------- Hero: editorial portfolio intro ---------- */
-  .hero{position:relative; min-height:100vh; min-height:100svh; display:flex; align-items:center; padding:8rem 0 4rem; overflow:hidden; border-top:0;
-    background:radial-gradient(45vmax 38vmax at 78% 50%, rgba(244,241,234,.055), transparent 68%), var(--bg)}
-  #heroCanvas{position:absolute; inset:0; width:100%; height:100%; z-index:0; pointer-events:none; display:none}
-  .hero-inner{position:relative; z-index:1; width:100%}
-  .hero-editorial{display:grid; grid-template-columns:minmax(0,1.02fr) minmax(360px,.98fr); gap:clamp(2rem,6vw,7rem); align-items:center}
-  .hero-copy{max-width:760px}
-  .status{display:inline-flex; align-items:center; gap:.6rem; margin-bottom:clamp(1.2rem,2vw,1.8rem); padding:.35rem .9rem; border:1px solid var(--line); border-radius:999px; background:rgba(244,241,234,.03); color:var(--mut)}
+  /* ---------- Hero ---------- */
+  .hero{position:relative; min-height:100vh; min-height:100svh; display:flex; align-items:center; padding:7rem 0 3rem; overflow:hidden; border-top:0;
+    background:radial-gradient(52vmax 42vmax at 72% 36%, rgba(244,241,234,.06), transparent 70%), var(--bg)}
+  #heroCanvas{display:none}
+  .hero-inner{position:relative; z-index:1; width:100%; display:grid; grid-template-columns:minmax(0,1.05fr) minmax(320px,.95fr); gap:clamp(2rem,6vw,7rem); align-items:center}
+  .hero-copy{position:relative; z-index:2}
+  .status{display:inline-flex; align-items:center; gap:.6rem; margin-bottom:clamp(1rem,2vw,1.6rem); padding:.35rem .9rem; border:1px solid var(--line); border-radius:999px; background:rgba(244,241,234,.03); color:var(--mut)}
   .status i{width:6px; height:6px; border-radius:50%; background:var(--acc); display:block}
-  .hero-name{font-family:var(--display); font-weight:800; font-size:clamp(4rem,8.5vw,8.5rem); line-height:.88; letter-spacing:-.06em; white-space:nowrap; margin-bottom:clamp(1.5rem,3vw,2.4rem)}
-  .hero-kicker{font-family:var(--font); font-weight:500; font-size:13px; letter-spacing:.02em; text-transform:uppercase; color:var(--mut); margin-bottom:.8rem}
-  .hero-headline{font-family:var(--display); font-weight:800; font-size:clamp(2.7rem,5.8vw,6.4rem); line-height:.92; letter-spacing:-.06em; max-width:10ch}
-  .hero-sub{font-family:var(--display); font-weight:700; font-size:clamp(1.05rem,1.7vw,1.45rem); letter-spacing:-.03em; margin-top:1.4rem}
-  .hero-line{color:var(--mut); font-size:clamp(.95rem,1.2vw,1.08rem); max-width:40ch; margin-top:.45rem}
-  .hero-cta{display:flex; flex-wrap:wrap; gap:.7rem; margin-top:1.6rem}
-  .hero-device-wrap{position:relative; width:100%; max-width:680px; justify-self:end; perspective:1400px}
-  .hero-device-wrap::before{content:""; position:absolute; width:72%; height:36%; left:14%; bottom:7%; background:var(--acc); filter:blur(70px); opacity:.08; border-radius:50%}
-  .hero-device{position:relative; transform:rotateY(-7deg) rotateX(3deg); transform-style:preserve-3d; transition:transform .7s var(--ease)}
-  .hero-device:hover{transform:rotateY(-2deg) rotateX(1deg) translateY(-6px)}
-  .hero-screen{position:relative; aspect-ratio:16/10; border:1px solid rgba(244,241,234,.3); border-radius:14px 14px 8px 8px; padding:9px; background:#111; box-shadow:0 35px 80px rgba(0,0,0,.55); overflow:hidden}
-  .hero-screen::before{content:""; position:absolute; inset:9px; border-radius:7px; background:linear-gradient(145deg,#151515,#090909); border:1px solid var(--line); pointer-events:none}
-  .screen-ui{position:absolute; inset:9px; z-index:1; padding:clamp(1rem,2vw,1.8rem); display:flex; flex-direction:column; justify-content:space-between; overflow:hidden}
-  .screen-top{display:flex; justify-content:space-between; align-items:center; font-size:10px; color:var(--mut); text-transform:uppercase; letter-spacing:.12em}
-  .screen-logo{font-family:var(--display); font-weight:800; font-size:clamp(1.1rem,2vw,1.7rem); color:var(--fg); letter-spacing:-.05em}
-  .screen-title{font-family:var(--display); font-weight:800; font-size:clamp(2rem,4.5vw,5rem); line-height:.86; letter-spacing:-.07em; max-width:7ch}
-  .screen-meta{display:flex; justify-content:space-between; gap:1rem; border-top:1px solid var(--line); padding-top:.7rem; color:var(--mut); font-size:10px}
-  .screen-dot{display:inline-block; width:5px; height:5px; border-radius:50%; background:var(--acc); margin-right:.35rem}
-  .hero-base{height:clamp(18px,2vw,28px); width:76%; margin:-1px auto 0; background:linear-gradient(180deg,#242424,#111); border:1px solid rgba(244,241,234,.22); border-top:0; border-radius:0 0 12px 12px; transform:perspective(600px) rotateX(-48deg); transform-origin:top}
-  .hero-hint{margin-top:clamp(1.5rem,3vw,2.5rem); display:flex; justify-content:space-between; gap:1rem; color:var(--mut); font-size:12px; letter-spacing:.02em}
-  .hero-hint span:last-child{color:var(--fg)}
-  @media (max-width:980px){
-    .hero{padding:7rem 0 3rem}
-    .hero-editorial{grid-template-columns:1fr; gap:3.5rem}
-    .hero-copy{max-width:760px}
-    .hero-device-wrap{justify-self:start; max-width:680px}
-    .hero-headline{max-width:12ch}
-  }
+  .hero-name{font-family:var(--display); font-weight:800; font-size:clamp(4rem,9vw,9rem); line-height:.88; letter-spacing:-.065em; white-space:nowrap}
+  .hero-kicker{margin-top:1.2rem; font-family:var(--font); font-size:clamp(1rem,1.35vw,1.15rem); color:var(--mut)}
+  .hero-line{margin-top:.8rem; font-family:var(--display); font-weight:700; font-size:clamp(1.35rem,2.4vw,2.2rem); line-height:1.05; letter-spacing:-.04em; max-width:18ch}
+  .hero-cta{display:flex; flex-wrap:wrap; gap:.7rem; margin-top:2rem}
+  .hero-video-space{position:relative; width:100%; aspect-ratio:9/16; max-height:72vh; border:1px solid var(--line2); background:rgba(244,241,234,.025); overflow:hidden}
+  .hero-video-space::before{content:"VIDEO"; position:absolute; left:1.2rem; top:1rem; font-family:var(--font); font-size:11px; letter-spacing:.14em; color:var(--mut)}
+  .hero-video-space::after{content:""; position:absolute; inset:12px; border:1px dashed rgba(244,241,234,.12); pointer-events:none}
   @media (max-width:760px){
-    .hero{padding-top:6.5rem; min-height:auto}
+    .hero{padding:6rem 0 2rem}
+    .hero-inner{grid-template-columns:1fr; gap:2.5rem}
     .hero-name{font-size:17vw}
-    .hero-headline{font-size:clamp(2.6rem,11vw,4.5rem)}
-    .hero-sub{margin-top:1rem}
-    .hero-cta{margin-top:1.25rem}
-    .hero-device-wrap{max-width:100%}
-    .hero-screen{border-radius:10px 10px 6px 6px}
-    .hero-hint{display:none}
+    .hero-video-space{width:min(100%,420px); justify-self:center; max-height:none}
   }
-  html.ready .hero .rv{animation:rise 1s var(--ease) both; animation-delay:calc(var(--d, 0) * 1ms)}
-  @keyframes rise{from{opacity:0; transform:translateY(20px)} to{opacity:1; transform:none}}
 
   /* ---------- Media (images, placeholders) ---------- */
   .media{position:relative; display:block; width:100%; padding:0; border:0; background:#101010; border-radius:4px; overflow:hidden; cursor:pointer}
@@ -378,41 +350,18 @@
 
   <!-- HOME -->
   <section id="home" class="hero">
-    <canvas id="heroCanvas" aria-hidden="true"></canvas>
     <div class="wrap hero-inner">
-      <div class="hero-editorial">
-        <div class="hero-copy">
-          <p class="label status rv" style="--d:500"><i></i>Available for freelance projects</p>
-          <p class="hero-kicker rv" style="--d:650">Graphic Designer &bull; CSE Student</p>
-          <h1 class="hero-name" id="heroName" aria-label="Yuvanesh V">Yuvanesh V</h1>
-          <h2 class="hero-headline rv" style="--d:850">What if your design could speak for you?</h2>
-          <p class="hero-sub rv" style="--d:1050">Blending design craft with an engineer's mind.</p>
-          <p class="hero-line rv" style="--d:1150">Branding, posters, social media design and digital experiences built to make brands stand out.</p>
-          <div class="hero-cta rv" style="--d:1250">
-            <a class="btn primary mag" href="#projects" data-cursor="Explore">View projects</a>
-            <a class="btn ghost mag" href="#contact">Contact</a>
-          </div>
-        </div>
-        <div class="hero-device-wrap rv" style="--d:850" aria-label="Portfolio preview">
-          <div class="hero-device">
-            <div class="hero-screen">
-              <div class="screen-ui">
-                <div class="screen-top"><span>YV.</span><span>Portfolio / 2026</span></div>
-                <div>
-                  <div class="screen-logo">Yuvanesh V</div>
-                  <div class="screen-title">Design that gets noticed.</div>
-                </div>
-                <div class="screen-meta">
-                  <span><i class="screen-dot"></i>Graphic Designer</span>
-                  <span>CSE Student</span>
-                </div>
-              </div>
-            </div>
-            <div class="hero-base"></div>
-          </div>
-          <div class="hero-hint"><span>Creative direction</span><span>Scroll to explore ↓</span></div>
+      <div class="hero-copy">
+        <p class="label status" data-fade style="--d:300"><i></i>Available for freelance projects</p>
+        <h1 class="hero-name" id="heroName">Yuvanesh V</h1>
+        <p class="hero-kicker" data-fade style="--d:700">Graphic Designer &bull; CSE Student</p>
+        <p class="hero-line" data-fade style="--d:850">What if your design could speak for you?</p>
+        <div class="hero-cta" data-fade style="--d:1000">
+          <a class="btn primary mag" href="#projects" data-cursor="Explore">View projects</a>
+          <a class="btn ghost mag" href="#contact">Contact</a>
         </div>
       </div>
+      <div class="hero-video-space" aria-label="Video placeholder"></div>
     </div>
   </section>
 
