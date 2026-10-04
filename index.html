@@ -118,7 +118,7 @@
   
   .status{display:inline-flex; align-items:center; gap:.6rem; margin-bottom:clamp(1rem,2vw,1.6rem); padding:.35rem .9rem; border:1px solid var(--line); border-radius:999px; background:rgba(244,241,234,.03); color:var(--mut)}
   .status i{width:6px; height:6px; border-radius:50%; background:var(--acc); display:block}
-  .hero-name{font-family:var(--display); font-weight:800; font-size:clamp(3.2rem, 13.6vw, 12.6rem); line-height:.9; letter-spacing:-.06em; white-space:nowrap; color:var(--fg); text-shadow:0 0 28px rgba(244,241,234,.12)}
+  .hero-name{font-family:var(--display); font-weight:800; font-size:clamp(3.2rem, 13.6vw, 12.6rem); line-height:.9; letter-spacing:-.06em; white-space:nowrap; color:#ffffff; opacity:1; text-shadow:0 0 18px rgba(255,255,255,.22), 0 2px 18px rgba(0,0,0,.7)}
   .hl-wrap{display:inline-block; overflow:hidden; vertical-align:top; padding:.04em .02em .14em; margin-bottom:-.14em}
   .hl{display:inline-block}
   html.js:not(.ready) .hl{transform:translateY(112%)}
@@ -1191,7 +1191,7 @@ var ASSET = {0:{src:"project-images/sprite-drink-poster.jpg",w:1080,h:1080},1:{s
           heroVideo.play().catch(function(){});
         });
       }
-    }, 2500);
+    }, 9000);
 
     // If the browser blocks sound playback, the first interaction unlocks it.
     function unlockHeroAudio(){
