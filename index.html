@@ -110,32 +110,23 @@
   .tlink:hover{background-size:100% 1px}
 
   /* ---------- Hero ---------- */
-  .hero{position:relative; min-height:100vh; min-height:100svh; display:flex; flex-direction:column; justify-content:flex-end; padding:7rem 0 clamp(1.5rem,3vw,2.5rem); overflow:hidden; border-top:0; background:#070707}
-  .hero-video{position:absolute; inset:0; width:100%; height:100%; z-index:0; pointer-events:none; background:#070707; object-fit:cover; object-position:center 57%}
-  .hero-video::cue{background:transparent}
-  .hero-video-shade{position:absolute; inset:0; z-index:1; pointer-events:none; background:
-    linear-gradient(90deg, rgba(7,7,7,.9) 0%, rgba(7,7,7,.68) 28%, rgba(7,7,7,.16) 62%, rgba(7,7,7,.5) 100%),
-    linear-gradient(0deg, rgba(7,7,7,.9) 0%, rgba(7,7,7,.08) 48%, rgba(7,7,7,.45) 100%)}
-  .hero-inner{position:relative; z-index:2}
-  .status{display:inline-flex; align-items:center; gap:.6rem; margin-bottom:clamp(1rem,2vw,1.6rem); padding:.35rem .9rem; border:1px solid var(--line); border-radius:999px; background:rgba(7,7,7,.42); -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); color:var(--mut)}
+  .hero{position:relative; min-height:100vh; min-height:100svh; display:flex; flex-direction:column; justify-content:flex-end; padding:7rem 0 clamp(1.5rem,3vw,2.5rem); overflow:hidden; border-top:0;
+    background:radial-gradient(52vmax 42vmax at 72% 36%, rgba(244,241,234,.06), transparent 70%), var(--bg)}
+  #heroCanvas{position:absolute; inset:0; width:100%; height:100%; z-index:0; pointer-events:none; display:block}
+  .hero-inner{position:relative; z-index:1}
+  .status{display:inline-flex; align-items:center; gap:.6rem; margin-bottom:clamp(1rem,2vw,1.6rem); padding:.35rem .9rem; border:1px solid var(--line); border-radius:999px; background:rgba(244,241,234,.03); color:var(--mut)}
   .status i{width:6px; height:6px; border-radius:50%; background:var(--acc); display:block}
-  .hero-name{font-family:var(--display); font-weight:800; font-size:clamp(3.2rem, 13.6vw, 12.6rem); line-height:.9; letter-spacing:-.06em; white-space:nowrap; text-shadow:0 4px 30px rgba(0,0,0,.35)}
+  .hero-name{font-family:var(--display); font-weight:800; font-size:clamp(3.2rem, 13.6vw, 12.6rem); line-height:.9; letter-spacing:-.06em; white-space:nowrap}
   .hl-wrap{display:inline-block; overflow:hidden; vertical-align:top; padding:.04em .02em .14em; margin-bottom:-.14em}
   .hl{display:inline-block}
   html.js:not(.ready) .hl{transform:translateY(112%)}
   .hl{transition:transform 1.1s var(--ease) calc(var(--i) * 55ms)}
   .sp{display:inline-block; width:.2em}
-  .hero-bottom{display:grid; grid-template-columns:1fr auto; gap:2rem; align-items:end; margin-top:clamp(1.6rem,3vw,2.6rem); padding-top:1.6rem; border-top:1px solid rgba(244,241,234,.2)}
-  .hero-sub{font-family:var(--display); font-weight:700; font-size:clamp(1.15rem, 1.9vw, 1.6rem); letter-spacing:-.03em; margin-bottom:.5rem; text-shadow:0 2px 18px rgba(0,0,0,.5)}
-  .hero-line{color:var(--mut); font-size:clamp(1rem,1.35vw,1.15rem); max-width:44ch; text-shadow:0 2px 14px rgba(0,0,0,.5)}
+  .hero-bottom{display:grid; grid-template-columns:1fr auto; gap:2rem; align-items:end; margin-top:clamp(1.6rem,3vw,2.6rem); padding-top:1.6rem; border-top:1px solid var(--line)}
+  .hero-sub{font-family:var(--display); font-weight:700; font-size:clamp(1.15rem, 1.9vw, 1.6rem); letter-spacing:-.03em; margin-bottom:.5rem}
+  .hero-line{color:var(--mut); font-size:clamp(1rem,1.35vw,1.15rem); max-width:44ch}
   .hero-cta{display:flex; flex-wrap:wrap; gap:.7rem}
-  @media (max-width:760px){
-    .hero-bottom{grid-template-columns:1fr}
-    .hero{padding-top:6rem}
-    .hero-name{font-size:16vw}
-    .hero-video{object-fit:cover; object-position:center 68%}
-    .hero-video-shade{background:linear-gradient(0deg, rgba(7,7,7,.96) 0%, rgba(7,7,7,.35) 45%, rgba(7,7,7,.48) 100%)}
-  }
+  @media (max-width:760px){ .hero-bottom{grid-template-columns:1fr} .hero{padding-top:6rem} .hero-name{font-size:16vw} }
   html.ready .hero .rv{animation:rise 1s var(--ease) both; animation-delay:calc(var(--d, 0) * 1ms)}
   @keyframes rise{from{opacity:0; transform:translateY(20px)} to{opacity:1; transform:none}}
 
@@ -358,8 +349,7 @@
 
   <!-- HOME -->
   <section id="home" class="hero">
-    <video id="heroVideo" class="hero-video" src="self-introduction.mp4" autoplay muted loop playsinline preload="metadata" aria-label="Yuvanesh self-introduction"></video>
-    <div class="hero-video-shade" aria-hidden="true"></div>
+    <canvas id="heroCanvas" aria-hidden="true"></canvas>
     <div class="wrap hero-inner">
       <p class="label status rv" style="--d:700"><i></i>Available for freelance projects</p>
       <h1 class="hero-name" id="heroName" aria-label="Yuvanesh V">Yuvanesh V</h1>
@@ -1173,24 +1163,7 @@ var ASSET = {0:{src:"project-images/sprite-drink-poster.jpg",w:1080,h:1080},1:{s
     layout();
     return { layout: layout, frame: function(time, dt){ if (visible) draw(time, dt); }, still: function(){ paintAll(); draw(3, 0); } };
   }
-  three = null;
-
-  var heroVideo = document.getElementById('heroVideo');
-  var heroVideoToggle = document.getElementById('heroVideoToggle');
-  if (heroVideo && heroVideoToggle) {
-    heroVideoToggle.addEventListener('click', function(){
-      if (heroVideo.paused) {
-        heroVideo.play().catch(function(){});
-      }
-      heroVideo.muted = !heroVideo.muted;
-      heroVideoToggle.querySelector('span').textContent = heroVideo.muted ? 'Play intro' : 'Mute intro';
-      heroVideoToggle.setAttribute('aria-label', heroVideo.muted ? 'Play introduction with sound' : 'Mute introduction');
-    });
-    heroVideo.addEventListener('ended', function(){
-      heroVideoToggle.querySelector('span').textContent = 'Play intro';
-      heroVideoToggle.setAttribute('aria-label', 'Play introduction with sound');
-    });
-  }
+  three = initHero();
 
   /* ---------- Scroll-linked updates ---------- */
   var zz = document.getElementById('zz'), zzItems = [].slice.call(zz.children);
