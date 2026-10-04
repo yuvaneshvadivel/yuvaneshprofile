@@ -112,8 +112,10 @@
   /* ---------- Hero ---------- */
   .hero{position:relative; min-height:100vh; min-height:100svh; display:flex; flex-direction:column; justify-content:flex-end; padding:7rem 0 clamp(1.5rem,3vw,2.5rem); overflow:hidden; border-top:0;
     background:radial-gradient(52vmax 42vmax at 72% 36%, rgba(244,241,234,.06), transparent 70%), var(--bg)}
-  #heroCanvas{position:absolute; inset:0; width:100%; height:100%; z-index:0; pointer-events:none; display:block}
-  .hero-inner{position:relative; z-index:1}
+  #heroCanvas{display:none}
+  .hero-video{position:absolute; inset:0; width:100%; height:100%; z-index:0; display:block; object-fit:contain; object-position:center; background:#000; opacity:.62; filter:saturate(.85) contrast(1.05)}
+  .hero::after{content:""; position:absolute; inset:0; z-index:1; pointer-events:none; background:linear-gradient(180deg, rgba(7,7,7,.18) 0%, rgba(7,7,7,.12) 45%, rgba(7,7,7,.88) 100%)}
+  .hero-inner{position:relative; z-index:2}
   .status{display:inline-flex; align-items:center; gap:.6rem; margin-bottom:clamp(1rem,2vw,1.6rem); padding:.35rem .9rem; border:1px solid var(--line); border-radius:999px; background:rgba(244,241,234,.03); color:var(--mut)}
   .status i{width:6px; height:6px; border-radius:50%; background:var(--acc); display:block}
   .hero-name{font-family:var(--display); font-weight:800; font-size:clamp(3.2rem, 13.6vw, 12.6rem); line-height:.9; letter-spacing:-.06em; white-space:nowrap}
@@ -349,6 +351,9 @@
 
   <!-- HOME -->
   <section id="home" class="hero">
+    <video class="hero-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+      <source src="self-introduction.mp4" type="video/mp4">
+    </video>
     <canvas id="heroCanvas" aria-hidden="true"></canvas>
     <div class="wrap hero-inner">
       <p class="label status rv" style="--d:700"><i></i>Available for freelance projects</p>
@@ -1163,7 +1168,8 @@ var ASSET = {0:{src:"project-images/sprite-drink-poster.jpg",w:1080,h:1080},1:{s
     layout();
     return { layout: layout, frame: function(time, dt){ if (visible) draw(time, dt); }, still: function(){ paintAll(); draw(3, 0); } };
   }
-  three = initHero();
+  // Use the centered self-introduction video as the Hero visual.
+  three = null;
 
   /* ---------- Scroll-linked updates ---------- */
   var zz = document.getElementById('zz'), zzItems = [].slice.call(zz.children);
