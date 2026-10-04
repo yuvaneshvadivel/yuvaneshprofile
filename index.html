@@ -1171,37 +1171,51 @@ var ASSET = {0:{src:"project-images/sprite-drink-poster.jpg",w:1080,h:1080},1:{s
   // Use the centered self-introduction video as the Hero visual.
   three = null;
 
-  // Browsers block autoplay with sound, so start muted and let the user enable audio.
+  // Hero video: play once. Browsers may block autoplay with sound, so
+  // start muted when necessary and unlock the audio on the first real interaction.
   var heroVideo = document.querySelector('.hero-video');
   if (heroVideo) {
     heroVideo.loop = false;
+    heroVideo.autoplay = true;
+    heroVideo.playsInline = true;
+    heroVideo.volume = 1;
     heroVideo.muted = false;
 
-    // Try to start with audio. Browsers may block autoplay with sound.
-    var startWithAudio = heroVideo.play();
-    if (startWithAudio && startWithAudio.catch) {
-      startWithAudio.catch(function(){
-        heroVideo.muted = true;
-        heroVideo.play().catch(function(){});
-      });
+    function playHeroWithAudio(){
+      if (heroVideo.ended) return;
+      heroVideo.muted = false;
+      heroVideo.volume = 1;
+      var p = heroVideo.play();
+      if (p && p.catch) {
+        p.catch(function(){
+          heroVideo.muted = true;
+          heroVideo.play().catch(function(){});
+        });
+      }
     }
 
-    // If autoplay with sound was blocked, the first user interaction unlocks audio.
+    // First try to start immediately with sound.
+    playHeroWithAudio();
+
+    // If the browser blocked sound autoplay, any first click/tap/key press
+    // on the portfolio enables the audio and continues the same playback.
     function unlockHeroAudio(){
-      if (!heroVideo.ended && heroVideo.muted) {
+      if (!heroVideo.ended) {
         heroVideo.muted = false;
         heroVideo.volume = 1;
         heroVideo.play().catch(function(){});
       }
-      window.removeEventListener('pointerdown', unlockHeroAudio);
-      window.removeEventListener('keydown', unlockHeroAudio);
-      window.removeEventListener('touchstart', unlockHeroAudio);
+      document.removeEventListener('pointerdown', unlockHeroAudio);
+      document.removeEventListener('click', unlockHeroAudio);
+      document.removeEventListener('touchstart', unlockHeroAudio);
+      document.removeEventListener('keydown', unlockHeroAudio);
     }
-    window.addEventListener('pointerdown', unlockHeroAudio, { once:true, passive:true });
-    window.addEventListener('keydown', unlockHeroAudio, { once:true });
-    window.addEventListener('touchstart', unlockHeroAudio, { once:true, passive:true });
+    document.addEventListener('pointerdown', unlockHeroAudio, { once:true, passive:true });
+    document.addEventListener('click', unlockHeroAudio, { once:true });
+    document.addEventListener('touchstart', unlockHeroAudio, { once:true, passive:true });
+    document.addEventListener('keydown', unlockHeroAudio, { once:true });
 
-    // Play only once. After it ends, it stays stopped until the portfolio is refreshed.
+    // Never replay automatically. Refreshing the portfolio starts it again.
     heroVideo.addEventListener('ended', function(){
       heroVideo.pause();
       heroVideo.currentTime = heroVideo.duration;
