@@ -113,8 +113,8 @@
   .hero{position:relative; min-height:100vh; min-height:100svh; display:flex; flex-direction:column; justify-content:flex-end; padding:7rem 0 clamp(1.5rem,3vw,2.5rem); overflow:hidden; border-top:0;
     background:radial-gradient(52vmax 42vmax at 72% 36%, rgba(244,241,234,.06), transparent 70%), var(--bg)}
   #heroCanvas{position:absolute; inset:0; width:100%; height:100%; z-index:0; pointer-events:none; display:none}
-  #heroVideo{position:absolute; inset:0; z-index:0; width:100%; height:100%; pointer-events:auto; cursor:pointer; object-fit:cover; object-position:center; opacity:.32; border:0; border-radius:0; filter:saturate(.8) contrast(.94) brightness(.72); -webkit-mask-image:radial-gradient(ellipse 82% 88% at 50% 50%, #000 35%, rgba(0,0,0,.94) 62%, transparent 100%); mask-image:radial-gradient(ellipse 82% 88% at 50% 50%, #000 35%, rgba(0,0,0,.94) 62%, transparent 100%)}
-  .hero-inner{position:relative; z-index:1} @media (max-width:760px){#heroVideo{opacity:.24; object-position:center}}
+  #heroVideo{position:absolute; inset:0; z-index:0; width:100%; height:100%; pointer-events:auto; cursor:pointer; object-fit:contain; object-position:center; opacity:.52; border:0; border-radius:0; background:var(--bg); filter:saturate(.82) contrast(.94) brightness(.72);}
+  .hero-inner{position:relative; z-index:1} @media (max-width:760px){#heroVideo{opacity:.42; object-fit:contain; object-position:center}}
   .status{display:inline-flex; align-items:center; gap:.6rem; margin-bottom:clamp(1rem,2vw,1.6rem); padding:.35rem .9rem; border:1px solid var(--line); border-radius:999px; background:rgba(244,241,234,.03); color:var(--mut)}
   .status i{width:6px; height:6px; border-radius:50%; background:var(--acc); display:block}
   .hero-name{font-family:var(--display); font-weight:800; font-size:clamp(3.2rem, 13.6vw, 12.6rem); line-height:.9; letter-spacing:-.06em; white-space:nowrap}
