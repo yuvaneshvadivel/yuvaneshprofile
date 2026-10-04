@@ -115,10 +115,13 @@
   #heroCanvas{display:none}
   .hero-video{position:absolute; inset:0; width:100%; height:100%; z-index:0; display:block; object-fit:contain; object-position:center; background:#000; opacity:.62; filter:saturate(.85) contrast(1.05)}
   .hero::after{content:""; position:absolute; inset:0; z-index:1; pointer-events:none; background:linear-gradient(180deg, rgba(7,7,7,.18) 0%, rgba(7,7,7,.12) 45%, rgba(7,7,7,.88) 100%)}
-  .hero-controls{position:absolute; right:var(--pad); top:6.4rem; z-index:3; display:flex; gap:.45rem}
-  .hero-sound,.hero-pause{padding:.6rem .95rem; border:1px solid var(--line2); border-radius:999px; background:rgba(7,7,7,.5); color:var(--fg); font-family:var(--font); font-weight:600; font-size:12px; cursor:pointer; -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); transition:background .3s, border-color .3s, transform .3s var(--ease)}
-  .hero-sound:hover,.hero-pause:hover{background:rgba(244,241,234,.1); border-color:var(--fg); transform:translateY(-1px)}
-  .hero-sound.is-on,.hero-pause.is-paused{border-color:var(--acc); color:var(--acc)}
+  .hero-controls{position:absolute; right:var(--pad); top:6.4rem; z-index:3}
+  .hero-media-toggle{padding:.6rem .95rem; border:1px solid var(--line2); border-radius:999px; background:rgba(7,7,7,.5); color:var(--fg); font-family:var(--font); font-weight:600; font-size:12px; cursor:pointer; -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); transition:background .3s, border-color .3s, transform .3s var(--ease)}
+  .hero-media-toggle:hover{background:rgba(244,241,234,.1); border-color:var(--fg); transform:translateY(-1px)}
+  .hero-media-menu{position:absolute; right:0; top:calc(100% + .45rem); min-width:120px; padding:.35rem; border:1px solid var(--line2); border-radius:12px; background:rgba(7,7,7,.88); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); box-shadow:0 12px 30px rgba(0,0,0,.3)}
+  .hero-media-menu button{display:block; width:100%; padding:.55rem .7rem; border:0; border-radius:8px; background:transparent; color:var(--fg); text-align:left; font-family:var(--font); font-size:12px; cursor:pointer}
+  .hero-media-menu button:hover{background:rgba(244,241,234,.1)}
+  .hero-media-menu button.is-active{color:var(--acc)}
   .hero-inner{position:relative; z-index:2}
   @media (max-width:760px){ .hero-controls{top:5.6rem; right:1rem} }
   .status{display:inline-flex; align-items:center; gap:.6rem; margin-bottom:clamp(1rem,2vw,1.6rem); padding:.35rem .9rem; border:1px solid var(--line); border-radius:999px; background:rgba(244,241,234,.03); color:var(--mut)}
@@ -360,8 +363,11 @@
       <source src="self-introduction.mp4" type="video/mp4">
     </video>
     <div class="hero-controls">
-      <button class="hero-sound" id="heroSound" type="button" aria-label="Enable video sound">Enable sound</button>
-      <button class="hero-pause" id="heroPause" type="button" aria-label="Pause video">Pause</button>
+      <button class="hero-media-toggle" id="heroMediaToggle" type="button" aria-label="Open video controls" aria-expanded="false">Video ▾</button>
+      <div class="hero-media-menu" id="heroMediaMenu" hidden>
+        <button id="heroSound" type="button">Enable sound</button>
+        <button id="heroPause" type="button">Pause</button>
+      </div>
     </div>
     <canvas id="heroCanvas" aria-hidden="true"></canvas>
     <div class="wrap hero-inner">
@@ -1184,35 +1190,35 @@ var ASSET = {0:{src:"project-images/sprite-drink-poster.jpg",w:1080,h:1080},1:{s
   var heroVideo = document.querySelector('.hero-video');
   var heroSound = document.getElementById('heroSound');
   var heroPause = document.getElementById('heroPause');
-  if (heroVideo && heroSound) {
-    heroSound.addEventListener('click', function(){
-      if (heroVideo.muted) {
-        heroVideo.muted = false;
-        heroVideo.volume = 1;
-        heroSound.textContent = 'Mute';
-        heroSound.classList.add('is-on');
-        heroSound.setAttribute('aria-label', 'Mute video sound');
-      } else {
-        heroVideo.muted = true;
-        heroSound.textContent = 'Unmute';
-        heroSound.classList.remove('is-on');
-        heroSound.setAttribute('aria-label', 'Enable video sound');
-      }
+  var heroMediaToggle = document.getElementById('heroMediaToggle');
+  var heroMediaMenu = document.getElementById('heroMediaMenu');
+  if (heroVideo && heroSound && heroPause && heroMediaToggle && heroMediaMenu) {
+    heroMediaToggle.addEventListener('click', function(){
+      var open = heroMediaToggle.getAttribute('aria-expanded') === 'true';
+      heroMediaToggle.setAttribute('aria-expanded', String(!open));
+      heroMediaMenu.hidden = open;
     });
-  }
-  if (heroVideo && heroPause) {
+    heroSound.addEventListener('click', function(){
+      heroVideo.muted = !heroVideo.muted;
+      heroVideo.volume = heroVideo.muted ? 0 : 1;
+      heroSound.textContent = heroVideo.muted ? 'Unmute' : 'Mute';
+      heroSound.classList.toggle('is-active', !heroVideo.muted);
+    });
     heroPause.addEventListener('click', function(){
       if (heroVideo.paused) {
-        heroVideo.play().then(function(){
-          heroPause.textContent = 'Pause';
-          heroPause.classList.remove('is-paused');
-          heroPause.setAttribute('aria-label', 'Pause video');
-        });
+        heroVideo.play();
+        heroPause.textContent = 'Pause';
+        heroPause.classList.remove('is-active');
       } else {
         heroVideo.pause();
         heroPause.textContent = 'Play';
-        heroPause.classList.add('is-paused');
-        heroPause.setAttribute('aria-label', 'Play video');
+        heroPause.classList.add('is-active');
+      }
+    });
+    document.addEventListener('click', function(e){
+      if (!heroMediaToggle.contains(e.target) && !heroMediaMenu.contains(e.target)) {
+        heroMediaMenu.hidden = true;
+        heroMediaToggle.setAttribute('aria-expanded', 'false');
       }
     });
   }
