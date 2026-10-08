@@ -116,9 +116,15 @@
   .hero-video{position:absolute; inset:0; width:100%; height:100%; z-index:0; display:block; object-fit:contain; object-position:center; background:#000; opacity:.62; filter:saturate(.85) contrast(1.05)}
   .hero::after{content:""; position:absolute; inset:0; z-index:1; pointer-events:none; background:linear-gradient(180deg, rgba(7,7,7,.18) 0%, rgba(7,7,7,.12) 45%, rgba(7,7,7,.88) 100%)}
   
-  .hero-id-card{position:absolute; z-index:2; top:8%; right:clamp(1.5rem,8vw,8rem); width:clamp(190px,19vw,250px); padding-top:clamp(4.5rem,8vw,7rem); transform-origin:50% 0; animation:badgeSwing 5.8s ease-in-out infinite; filter:drop-shadow(0 22px 34px rgba(0,0,0,.38));}
-  .id-lanyard{position:absolute; z-index:0; top:0; left:50%; width:clamp(24px,3vw,36px); height:clamp(6rem,10vw,8rem); transform:translateX(-50%); background:linear-gradient(90deg,#292929 0%,#77736b 42%,#292929 100%); clip-path:polygon(0 0,100% 0,74% 100%,26% 100%); border-radius:2px;}
-  .id-clip{position:absolute; z-index:2; top:clamp(5.2rem,8.6vw,6.9rem); left:50%; width:28px; height:20px; transform:translateX(-50%); border:2px solid #a7a196; border-radius:5px; background:linear-gradient(135deg,#d8d3c8,#625f58); box-shadow:0 3px 8px #0008;}
+  .hero-id-card{position:absolute; z-index:2; top:8%; right:clamp(1.5rem,8vw,8rem); width:clamp(190px,19vw,250px); padding-top:clamp(4.5rem,8vw,7rem); transform-origin:50% 0; animation:badgeSwing 5.8s ease-in-out infinite; filter:drop-shadow(0 22px 34px rgba(0,0,0,.38)); transition:filter .35s ease; perspective:900px; cursor:pointer;}
+  .hero-id-card:hover,.hero-id-card:focus-within{animation-play-state:paused; filter:drop-shadow(0 28px 42px rgba(0,0,0,.58));}
+  .hero-id-card:hover .id-card-face,.hero-id-card:focus-within .id-card-face{transform:translateY(-7px) rotateY(-5deg) rotateX(2deg); border-color:rgba(200,255,61,.82); box-shadow:inset 0 0 0 3px rgba(244,241,234,.035),0 0 28px rgba(200,255,61,.12);}
+  .hero-id-card:hover .id-photo,.hero-id-card:focus-within .id-photo{filter:saturate(1.12) contrast(1.04); transform:scale(1.025);}
+  .hero-id-card:hover .id-mark,.hero-id-card:focus-within .id-mark{background:var(--acc); color:var(--bg); border-color:var(--acc); transform:rotate(12deg);}
+  .id-card-face,.id-photo,.id-mark{transition:transform .45s cubic-bezier(.2,.8,.2,1),border-color .35s ease,box-shadow .35s ease,filter .35s ease,background .35s ease,color .35s ease;}
+  .id-lanyard{position:absolute; z-index:0; top:0; left:50%; width:clamp(22px,2.5vw,30px); height:clamp(6rem,10vw,8rem); transform:translateX(-50%); border-radius:5px; background:linear-gradient(90deg,#111 0%,#292929 22%,#454545 48%,#242424 72%,#101010 100%); box-shadow:inset 2px 0 2px rgba(255,255,255,.07),inset -2px 0 2px rgba(0,0,0,.55); clip-path:polygon(0 0,100% 0,74% 100%,26% 100%);}
+  .id-lanyard::after{content:""; position:absolute; inset:0 28% 0 28%; background:repeating-linear-gradient(180deg,rgba(255,255,255,.12) 0 2px,transparent 2px 5px); opacity:.5;}
+  .id-clip{position:absolute; z-index:2; top:clamp(5.2rem,8.6vw,6.9rem); left:50%; width:28px; height:20px; transform:translateX(-50%); border:2px solid #3c3c3c; border-radius:5px; background:linear-gradient(135deg,#595959,#202020); box-shadow:0 3px 8px #0008;}
   .id-card-face{position:relative; z-index:1; overflow:hidden; padding:15px 15px 13px; border:1px solid rgba(214,203,176,.68); border-radius:10px; background:linear-gradient(145deg,#191919,#080808 70%); box-shadow:inset 0 0 0 3px rgba(244,241,234,.035),0 0 0 1px rgba(0,0,0,.5); color:#f4f1ea;}
   .id-card-top,.id-card-bottom{display:flex; align-items:center; justify-content:space-between; gap:8px; font-size:8px; font-weight:700; letter-spacing:.17em; color:#b8b1a2;}
   .id-mark{display:grid; place-items:center; width:26px; height:26px; border:1px solid #b5a477; border-radius:50%; color:#d4c18f; font-size:9px; letter-spacing:-.05em;}
@@ -128,6 +134,7 @@
   .id-card-rule{height:1px; margin:13px 0 10px; background:linear-gradient(90deg,#b5a477,rgba(181,164,119,.08));}
   .id-card-bottom{font-size:7px; letter-spacing:.12em;}
   @keyframes badgeSwing{0%,100%{transform:rotate(2deg)} 50%{transform:rotate(-2.8deg)}}
+  @media (hover:none){.hero-id-card:active .id-card-face{transform:translateY(-4px) scale(1.015); border-color:rgba(200,255,61,.82);}}
   @media (prefers-reduced-motion:reduce){.hero-id-card{animation:none;}}
   .status{display:inline-flex; align-items:center; gap:.6rem; margin-bottom:clamp(1rem,2vw,1.6rem); padding:.35rem .9rem; border:1px solid var(--line); border-radius:999px; background:rgba(244,241,234,.03); color:var(--mut)}
   .status i{width:6px; height:6px; border-radius:50%; background:var(--acc); display:block}
