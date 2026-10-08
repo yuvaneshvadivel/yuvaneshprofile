@@ -113,7 +113,6 @@
   .hero{position:relative; min-height:100vh; min-height:100svh; display:flex; flex-direction:column; justify-content:flex-end; padding:7rem 0 clamp(1.5rem,3vw,2.5rem); overflow:hidden; border-top:0;
     background:radial-gradient(52vmax 42vmax at 72% 36%, rgba(244,241,234,.06), transparent 70%), var(--bg)}
   #heroCanvas{display:none}
-  .hero-video{position:absolute; inset:0; width:100%; height:100%; z-index:0; display:block; object-fit:contain; object-position:center; background:#000; opacity:.62; filter:saturate(.85) contrast(1.05)}
   .hero::after{content:""; position:absolute; inset:0; z-index:1; pointer-events:none; background:linear-gradient(180deg, rgba(7,7,7,.18) 0%, rgba(7,7,7,.12) 45%, rgba(7,7,7,.88) 100%)}
   
   .hero-id-card{position:absolute; z-index:2; top:8%; right:clamp(1.5rem,8vw,8rem); width:clamp(190px,19vw,250px); padding-top:clamp(4.5rem,8vw,7rem); transform-origin:50% 0; animation:badgeSwing 5.8s ease-in-out infinite; filter:drop-shadow(0 22px 34px rgba(0,0,0,.38)); transition:filter .35s ease; perspective:900px; cursor:pointer;}
@@ -385,9 +384,6 @@
 
   <!-- HOME -->
   <section id="home" class="hero">
-    <video class="hero-video" autoplay playsinline preload="auto" aria-hidden="true">
-      <source src="self-introduction.mp4" type="video/mp4">
-    </video>
     <div class="hero-id-card" aria-label="Yuvanesh V, graphic designer ID card">
       <div class="id-lanyard" aria-hidden="true"></div>
       <div class="id-clip" aria-hidden="true"></div>
@@ -1214,58 +1210,7 @@ var ASSET = {0:{src:"project-images/sprite-drink-poster.jpg",w:1080,h:1080},1:{s
     layout();
     return { layout: layout, frame: function(time, dt){ if (visible) draw(time, dt); }, still: function(){ paintAll(); draw(3, 0); } };
   }
-  // Use the centered self-introduction video as the Hero visual.
   three = null;
-
-  // Hero video: wait 9 seconds, then play once.
-  var heroVideo = document.querySelector('.hero-video');
-  if (heroVideo) {
-    heroVideo.loop = false;
-    heroVideo.autoplay = false;
-    heroVideo.playsInline = true;
-    heroVideo.volume = 1;
-    heroVideo.muted = false;
-
-    var heroPlayTimer = setTimeout(function(){
-      if (heroVideo.ended) return;
-      heroVideo.muted = false;
-      heroVideo.volume = 1;
-      var p = heroVideo.play();
-      if (p && p.catch) {
-        p.catch(function(){
-          heroVideo.muted = true;
-          heroVideo.play().catch(function(){});
-        });
-      }
-    }, 9000);
-
-    // If the browser blocks sound playback, the first interaction unlocks it.
-    function unlockHeroAudio(){
-      if (!heroVideo.ended && heroVideo.paused) {
-        heroVideo.muted = false;
-        heroVideo.volume = 1;
-        heroVideo.play().catch(function(){
-          heroVideo.muted = true;
-          heroVideo.play().catch(function(){});
-        });
-      }
-      document.removeEventListener('pointerdown', unlockHeroAudio);
-      document.removeEventListener('click', unlockHeroAudio);
-      document.removeEventListener('touchstart', unlockHeroAudio);
-      document.removeEventListener('keydown', unlockHeroAudio);
-    }
-    document.addEventListener('pointerdown', unlockHeroAudio, { once:true, passive:true });
-    document.addEventListener('click', unlockHeroAudio, { once:true });
-    document.addEventListener('touchstart', unlockHeroAudio, { once:true, passive:true });
-    document.addEventListener('keydown', unlockHeroAudio, { once:true });
-
-    // Never replay automatically. Refreshing the portfolio starts the sequence again.
-    heroVideo.addEventListener('ended', function(){
-      clearTimeout(heroPlayTimer);
-      heroVideo.pause();
-      heroVideo.currentTime = heroVideo.duration;
-    });
-  }
 
   /* ---------- Scroll-linked updates ---------- */
   var zz = document.getElementById('zz'), zzItems = [].slice.call(zz.children);
