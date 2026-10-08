@@ -113,8 +113,9 @@
   .hero{position:relative; min-height:100vh; min-height:100svh; display:flex; flex-direction:column; justify-content:flex-end; padding:7rem 0 clamp(1.5rem,3vw,2.5rem); overflow:hidden; border-top:0;
     background:radial-gradient(52vmax 42vmax at 72% 36%, rgba(244,241,234,.06), transparent 70%), var(--bg)}
   #heroCanvas{display:none}
-  .hero-video{position:absolute; inset:0; width:100%; height:100%; z-index:0; display:block; object-fit:contain; object-position:center; background:#000; opacity:.62; filter:saturate(.85) contrast(1.05)}
-  .hero::after{content:""; position:absolute; inset:0; z-index:1; pointer-events:none; background:linear-gradient(180deg, rgba(7,7,7,.18) 0%, rgba(7,7,7,.12) 45%, rgba(7,7,7,.88) 100%)}
+  .hero-portrait{position:absolute; z-index:0; top:13%; right:clamp(1.5rem,7vw,7rem); width:clamp(230px,32vw,440px); height:70%; overflow:hidden; border-radius:4px; background:#f4f1ea}
+  .hero-portrait img{display:block; width:100%; height:100%; object-fit:cover; object-position:center 18%; filter:contrast(1.02) saturate(.88)}
+  .hero::after{content:""; position:absolute; inset:0; z-index:1; pointer-events:none; background:linear-gradient(90deg, var(--bg) 0%, rgba(7,7,7,.96) 30%, rgba(7,7,7,.45) 63%, rgba(7,7,7,.08) 100%), linear-gradient(180deg, rgba(7,7,7,.05) 0%, rgba(7,7,7,.02) 48%, rgba(7,7,7,.92) 100%)}
   
   .status{display:inline-flex; align-items:center; gap:.6rem; margin-bottom:clamp(1rem,2vw,1.6rem); padding:.35rem .9rem; border:1px solid var(--line); border-radius:999px; background:rgba(244,241,234,.03); color:var(--mut)}
   .status i{width:6px; height:6px; border-radius:50%; background:var(--acc); display:block}
@@ -128,7 +129,7 @@
   .hero-sub{font-family:var(--display); font-weight:700; font-size:clamp(1.15rem, 1.9vw, 1.6rem); letter-spacing:-.03em; margin-bottom:.5rem}
   .hero-line{color:var(--mut); font-size:clamp(1rem,1.35vw,1.15rem); max-width:44ch}
   .hero-cta{display:flex; flex-wrap:wrap; gap:.7rem}
-  @media (max-width:760px){ .hero-bottom{grid-template-columns:1fr} .hero{padding-top:6rem} .hero-name{font-size:16vw} }
+  @media (max-width:760px){ .hero-bottom{grid-template-columns:1fr} .hero{padding-top:6rem} .hero-name{font-size:16vw; white-space:normal} .hero-portrait{top:12%; right:5%; width:58%; height:56%; opacity:.72} .hero::after{background:linear-gradient(90deg, rgba(7,7,7,.92) 0%, rgba(7,7,7,.55) 55%, rgba(7,7,7,.18) 100%), linear-gradient(180deg, rgba(7,7,7,.02) 0%, rgba(7,7,7,.12) 40%, rgba(7,7,7,.96) 100%)} }
   html.ready .hero .rv{animation:rise 1s var(--ease) both; animation-delay:calc(var(--d, 0) * 1ms)}
   @keyframes rise{from{opacity:0; transform:translateY(20px)} to{opacity:1; transform:none}}
 
@@ -351,9 +352,9 @@
 
   <!-- HOME -->
   <section id="home" class="hero">
-    <video class="hero-video" autoplay playsinline preload="auto" aria-hidden="true">
-      <source src="self-introduction.mp4" type="video/mp4">
-    </video>
+    <div class="hero-portrait" aria-hidden="true">
+      <img src="project-images/profile.jpg" alt="" fetchpriority="high">
+    </div>
     <canvas id="heroCanvas" aria-hidden="true"></canvas>
     <div class="wrap hero-inner">
       <p class="label status rv" style="--d:700"><i></i>Available for freelance projects</p>
@@ -1168,59 +1169,6 @@ var ASSET = {0:{src:"project-images/sprite-drink-poster.jpg",w:1080,h:1080},1:{s
     layout();
     return { layout: layout, frame: function(time, dt){ if (visible) draw(time, dt); }, still: function(){ paintAll(); draw(3, 0); } };
   }
-  // Use the centered self-introduction video as the Hero visual.
-  three = null;
-
-  // Hero video: wait 9 seconds, then play once.
-  var heroVideo = document.querySelector('.hero-video');
-  if (heroVideo) {
-    heroVideo.loop = false;
-    heroVideo.autoplay = false;
-    heroVideo.playsInline = true;
-    heroVideo.volume = 1;
-    heroVideo.muted = false;
-
-    var heroPlayTimer = setTimeout(function(){
-      if (heroVideo.ended) return;
-      heroVideo.muted = false;
-      heroVideo.volume = 1;
-      var p = heroVideo.play();
-      if (p && p.catch) {
-        p.catch(function(){
-          heroVideo.muted = true;
-          heroVideo.play().catch(function(){});
-        });
-      }
-    }, 9000);
-
-    // If the browser blocks sound playback, the first interaction unlocks it.
-    function unlockHeroAudio(){
-      if (!heroVideo.ended && heroVideo.paused) {
-        heroVideo.muted = false;
-        heroVideo.volume = 1;
-        heroVideo.play().catch(function(){
-          heroVideo.muted = true;
-          heroVideo.play().catch(function(){});
-        });
-      }
-      document.removeEventListener('pointerdown', unlockHeroAudio);
-      document.removeEventListener('click', unlockHeroAudio);
-      document.removeEventListener('touchstart', unlockHeroAudio);
-      document.removeEventListener('keydown', unlockHeroAudio);
-    }
-    document.addEventListener('pointerdown', unlockHeroAudio, { once:true, passive:true });
-    document.addEventListener('click', unlockHeroAudio, { once:true });
-    document.addEventListener('touchstart', unlockHeroAudio, { once:true, passive:true });
-    document.addEventListener('keydown', unlockHeroAudio, { once:true });
-
-    // Never replay automatically. Refreshing the portfolio starts the sequence again.
-    heroVideo.addEventListener('ended', function(){
-      clearTimeout(heroPlayTimer);
-      heroVideo.pause();
-      heroVideo.currentTime = heroVideo.duration;
-    });
-  }
-
   /* ---------- Scroll-linked updates ---------- */
   var zz = document.getElementById('zz'), zzItems = [].slice.call(zz.children);
   function updateScroll(){
